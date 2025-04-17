@@ -3,12 +3,12 @@
 
 启用
 
-curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:7000/api/chaos/enable/office
+curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:9000/api/chaos/enable/office
 
 
 
 关闭
 
-curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:7000/api/chaos/disable/office
+curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:9000/api/chaos/disable/office
 
 

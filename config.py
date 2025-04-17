@@ -24,7 +24,7 @@ API_CONFIG = {
         "m63CdvcsCkKiz9YyoakbxzUt"
     ],
     "host": "0.0.0.0",
-    "port": 7000,
+    "port": 9000,
     "log_file": "/opt/waf-api-chaos/logs/waf_api.log"  # 修改为Linux路径格式
 }
 

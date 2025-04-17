@@ -19,7 +19,11 @@ class CustomPolicyManager:
         self.waf_instance = waf_instance
         self.base_url = None
         self.headers = {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:137.0) Gecko/20100101 Firefox/137.0",
+            "Accept": "*/*",
+            "Accept-Language": "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2",
+            "Accept-Encoding": "gzip, deflate, br, zstd"
         }
         
         # 创建Session并配置重试机制
@@ -31,7 +35,7 @@ class CustomPolicyManager:
 
         if waf_instance:
             self.base_url = waf_instance["base_url"]
-            self.headers["X-SLCE-API-TOKEN"] = waf_instance["api_token"]
+            self.headers["Authorization"] = waf_instance["api_token"]
 
     def configure_chaos(self, site_id, html_encryption=True, html_fast_decryption=False, 
                        img_encryption=False, is_enabled=True, js_encryption=False, 
@@ -48,9 +52,8 @@ class CustomPolicyManager:
             img_text: 图片文字
             js_path: JS路径列表
         """
-        url = f"{self.base_url}/open/site/chaos"
+        url = f"{self.base_url}/open/site/{site_id}/chaos"
         data = {
-            "id": site_id,
             "html_encryption": html_encryption,
             "html_fast_decryption": html_fast_decryption,
             "img_encryption": img_encryption,
@@ -71,7 +74,10 @@ class CustomPolicyManager:
 
 if __name__ == "__main__":
     # 测试配置
-    waf_instance = WAF_CONFIGS["office"][0]
+    waf_instance = {
+        "base_url": "https://10.224.100.21:9443",
+        "api_token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVaWQiOjEsIlVzZXJuYW1lIjoiYWRtaW4iLCJSb2xlIjoxLCJQd2QiOnRydWUsIlRmYSI6ZmFsc2UsIlZlciI6MX0.fAtORs9T3MH-Du5b3ji8rrAvkauJwmNF60TJDmIBB5Y"
+    }
     manager = CustomPolicyManager(waf_instance)
     
     # 测试启用混沌工程
