@@ -3,12 +3,12 @@
 
 启用
 
-curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://192.168.1.2:8000/api/challenge/enable/office
+curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:7000/api/chaos/enable/office
 
 
 
 关闭
 
-curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://192.168.1.2:8000/api/challenge/disable/office
+curl -k -X POST -H "token: KQo55s0kDZtSBqYbiCuhIG9E" http://localhost:7000/api/chaos/disable/office
 
 
