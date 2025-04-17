@@ -47,12 +47,10 @@ class CustomPolicyManager:
             js_encryption: 是否启用JS加密
             img_text: 图片文字
             js_path: JS路径列表
-            
-        Returns:
-            API响应结果
         """
-        url = f"{self.base_url}/open/site/{site_id}/chaos"
+        url = f"{self.base_url}/open/site/chaos"
         data = {
+            "id": site_id,
             "html_encryption": html_encryption,
             "html_fast_decryption": html_fast_decryption,
             "img_encryption": img_encryption,
@@ -61,8 +59,15 @@ class CustomPolicyManager:
             "img_text": img_text,
             "js_path": js_path if js_path is not None else []
         }
-        response = self.session.post(url, headers=self.headers, json=data, timeout=30)
-        return response.json()
+        
+        try:
+            response = self.session.post(url, headers=self.headers, json=data, timeout=30)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            import logging
+            logging.error(f"配置混沌工程失败 - site_id: {site_id}, error: {str(e)}")
+            raise
 
 if __name__ == "__main__":
     # 测试配置

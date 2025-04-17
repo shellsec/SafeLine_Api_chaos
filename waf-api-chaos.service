@@ -1,0 +1,14 @@
+[Unit]
+Description=WAF API Service waf-api-chaos
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/waf-api-chaos
+Environment="PYTHONPATH=/opt/waf-api-chaos"
+ExecStart=/usr/local/bin/python3.9 /opt/waf-api-chaos/api_server.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

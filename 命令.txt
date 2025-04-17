@@ -1,30 +1,31 @@
 # 1. 创建部署目录
-mkdir -p /opt/waf-api
+mkdir -p /opt/waf-api-chaos
 
 # 2. 上传文件到服务器
 # 在本地执行：
-scp -r e:\安全项目和文档\雷池wafAPI接口调用\* root@服务器IP:/opt/waf-api/
+scp -r e:\安全项目和文档\雷池wafAPI接口调用\* root@服务器IP:/opt/waf-api-chaos/
 
 # 3. 安装依赖
 pip3 install fastapi uvicorn requests
 
 # 4. 配置服务
-cp /opt/waf-api/waf-api.service /etc/systemd/system/
+cp /opt/waf-api-chaos/waf-api-chaos.service /etc/systemd/system/
 systemctl daemon-reload
-systemctl enable waf-api
-systemctl start waf-api
+systemctl enable waf-api-chaos
+systemctl start waf-api-chaos
+systemctl status waf-api-chaos
 
 # 查看服务状态
-systemctl status waf-api
+systemctl status waf-api-chaos
 
 # 查看日志
-journalctl -u waf-api -f
+journalctl -u waf-api-chaos -f
 
 # 重启服务
-systemctl restart waf-api
+systemctl restart waf-api-chaos
 
 # 停止服务
-systemctl stop waf-api
+systemctl stop waf-api-chaos
 
 
 # 查看防火墙状态
@@ -36,33 +37,37 @@ firewall-cmd --reload
 
 
 # 创建日志目录
-mkdir -p /opt/waf-api/logs
-chmod 755 /opt/waf-api/logs
+mkdir -p /opt/waf-api-chaos/logs
+chmod 755 /opt/waf-api-chaos/logs
 
 # 重新加载服务
 systemctl daemon-reload
-systemctl restart waf-api
+systemctl restart waf-api-chaos
 
 # 查看详细错误日志
-journalctl -u waf-api -n 50 --no-pager
+journalctl -u waf-api-chaos -n 50 --no-pager
 
 
 
 
 下载安装
 
-# 1. 安装编译依赖
-yum install -y gcc openssl-devel bzip2-devel libffi-devel zlib-devel wget
+# 安装编译依赖
+sudo yum install gcc openssl-devel bzip2-devel libffi-devel
 
-# 2. 下载 Python 3.9.18 源码
-cd /usr/local/src
-wget https://www.python.org/ftp/python/3.9.18/Python-3.9.18.tgz
+# 下载并编译 Python（以 3.9 为例）
+wget https://www.python.org/ftp/python/3.9.19/Python-3.9.19.tgz
+tar -xzf Python-3.9.19.tgz
+cd Python-3.9.19
 
-# 3. 解压并编译安装
-tar xzf Python-3.9.18.tgz
-cd Python-3.9.18
-./configure --enable-optimizations
-make altinstall
+# 配置时指定 OpenSSL 路径
+./configure --prefix=/usr/local/bin/python3.9 --with-openssl=/usr/bin/openssl11
+make -j$(nproc)
+sudo make install
+
+# 验证新版本
+/usr/local/python3.9/bin/python3 -c "import ssl; print(ssl.OPENSSL_VERSION)"  # 应输出 1.1.1k
+
 
 # 4. 创建软链接
 ln -sf /usr/local/bin/python3.9 /usr/bin/python3.9
@@ -102,5 +107,7 @@ pip3 install click h11 websockets typing-extensions
 
 
 
-
+# 安装编译依赖
+yum groupinstall -y "Development Tools"
+yum install -y zlib-devel bzip2-devel sqlite-devel
 

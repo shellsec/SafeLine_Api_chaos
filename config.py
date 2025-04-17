@@ -1,5 +1,5 @@
 # WAF API配置
-WAF_CONFIGS = {
+WAF_PROD_CONFIGS = {
     "office": [
         {
             "name": "waf1_instance1",
@@ -25,10 +25,9 @@ API_CONFIG = {
     ],
     "host": "0.0.0.0",
     "port": 7000,
-    "log_file": "/opt/waf-api/logs/waf_api.log"  # 修改为Linux路径格式
+    "log_file": "/opt/waf-api-chaos/logs/waf_api.log"  # 修改为Linux路径格式
 }
 
 # 当前使用的配置
 # WAF_CONFIGS = WAF_TEST_CONFIGS
-# WAF_CONFIGS = WAF_TEST_CONFIGS
-WAF_CONFIGS = WAF_CONFIGS
+WAF_CONFIGS = WAF_PROD_CONFIGS
